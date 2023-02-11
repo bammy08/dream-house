@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import logo from '../assests/register.webp';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SignUpWithGoogle from '../components/SignUpWithGoogle';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
+import { db } from '../firebase';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { toast } from 'react-toastify';
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,12 +22,39 @@ const SignUp = () => {
   });
 
   const { name, email, password } = formData;
+  const navigate = useNavigate();
   const changeValue = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   };
+
+  async function submitForm(e) {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+      const user = userCredential.user;
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, 'users', user.uid), formDataCopy);
+      toast.success('account created successfully');
+      navigate('/');
+    } catch (error) {
+      toast.error('Something went wrong with the registration');
+    }
+  }
 
   return (
     <section>
@@ -29,7 +64,7 @@ const SignUp = () => {
           <img src={logo} alt="key" className="w-full rounded-2xl" />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={submitForm}>
             <input
               type="text"
               id="name"
