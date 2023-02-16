@@ -3,8 +3,10 @@ import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
 import { TbCurrencyNaira } from 'react-icons/tb';
+import { FaTrash } from 'react-icons/fa';
+import { MdEdit } from 'react-icons/md';
 
-const ListingItem = ({ listing, id }) => {
+const ListingItem = ({ listing, id, onEdit, onDelete }) => {
   return (
     <li className="bg-white flex flex-col justify-between items-center shadow-md hover:shadow-xl rounded-md overflow-hidden transition-shadow duration-150 relative m-[10px]">
       <Link className=" contents" to={`/category/${listing.type}/${id}`}>
@@ -29,7 +31,7 @@ const ListingItem = ({ listing, id }) => {
           </div>
           <p className="font-semibold m-0 text-xl truncate">{listing.name}</p>
           <p className="flex items-center text-[#436a82] mt-2 font-semibold">
-            <TbCurrencyNaira className=" text-[#436a82]" />
+            <TbCurrencyNaira className="h-5 w-4 text-[#436a82]" />
             {listing.offer
               ? listing.discountedPrice
                   .toString()
@@ -39,7 +41,7 @@ const ListingItem = ({ listing, id }) => {
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             {listing.type === 'rent' && ' / month'}
           </p>
-          <div className="flex items-center mt-[10px] space-x-3">
+          <div className="flex items-center mt-[10px] space-x-3 ml-1">
             <div className="flex items-center space-x-1">
               <p className="font-bold text-xs">
                 {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : '1 Bed'}
@@ -55,6 +57,18 @@ const ListingItem = ({ listing, id }) => {
           </div>
         </div>
       </Link>
+      {onDelete && (
+        <FaTrash
+          className="absolute bottom-2 right-2 h-[14px] cursor-pointer text-red-500"
+          onClick={() => onDelete(listing.id)}
+        />
+      )}
+      {onEdit && (
+        <MdEdit
+          className="absolute bottom-2 right-7 h-4 cursor-pointer "
+          onClick={() => onEdit(listing.id)}
+        />
+      )}
     </li>
   );
 };
