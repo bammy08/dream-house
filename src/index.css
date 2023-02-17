@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -10,12 +14,19 @@ body {
   background: rgb(228, 225, 225);
 }
 
-html,
-body {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+.swiper-button-next:after,
+.swiper-button-prev:after{
+    color: #e19b4f;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
+    background:   #e19b4f!important
+}
+
+html::-webkit-scrollbar{
+    display: none;
+}
+
+html{
+    scrollbar-width: none;
+}
