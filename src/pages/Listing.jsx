@@ -3,6 +3,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useParams } from 'react-router-dom';
 import Spinner from '../components/Spinner';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, {
   EffectFade,
@@ -133,10 +135,10 @@ const Listing = () => {
               <FaBath className="text-lg mr-1" />
               {+listing.bathrooms > 1 ? `${listing.bathrooms} Baths` : '1 Bath'}
             </li>
-            <li className="flex items-center whitespace-nowrap">
+            {/* <li className="flex items-center whitespace-nowrap">
               <FaParking className="text-lg mr-1" />
               {listing.parking ? 'Parking spot' : 'No parking'}
-            </li>
+            </li> */}
             <li className="flex items-center whitespace-nowrap">
               <FaChair className="text-lg mr-1" />
               {listing.furnished ? 'Furnished' : 'Not furnished'}
@@ -156,7 +158,18 @@ const Listing = () => {
             <Contact userRef={listing.userRef} listing={listing} />
           )}
         </div>
-        <div className="bg-red-600 w-full h-52 lg:h-96 z-10 overflow-x-hidden"></div>
+        <div className="w-full h-52 lg:h-96 z-10 overflow-x-hidden ">
+          <iframe
+            width="600"
+            height="400"
+            id="gmap_canvas"
+            src="https://maps.google.com/maps?q=&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            frameborder="0"
+            scrolling="no"
+            marginheight="0"
+            marginwidth="0"
+          ></iframe>
+        </div>
       </div>
     </main>
   );
