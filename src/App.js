@@ -13,6 +13,7 @@ import CreateListing from './pages/CreateListing';
 import EditListing from './pages/EditListing';
 import Listing from './pages/Listing';
 import Category from './pages/Category';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/edit-listing/:listingId" element={<EditListing />} />
           </Route>
         </Routes>
+        <Footer />
       </Router>
       <ToastContainer
         position="top-center"
